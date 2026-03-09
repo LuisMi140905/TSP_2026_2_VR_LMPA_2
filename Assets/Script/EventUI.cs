@@ -46,11 +46,17 @@ public class EventUI : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+    //Recargar escena actual
+    public void ReloadCurrentScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex);
+    }
     //Método para cambiar entre páneles
-    public void CycleObjects()
+    public void CycleObjects(int direction)
     {
         //Incrementa el índice y vuelve al principio
-        currentIndex = (currentIndex+1) % ListaInstrucciones.Count;
+        currentIndex = (currentIndex+direction + ListaInstrucciones.Count) % ListaInstrucciones.Count;
 
         //Actualizar la visibilidad
         UpdateVisibility();
@@ -58,10 +64,18 @@ public class EventUI : MonoBehaviour
     //Método para actualizar el texto mostrado
     private void UpdateText()
     {
-        if(MensajesInstrucciones.Count>0)
+        if(MensajesInstrucciones.Count>0 && textMeshProUGUI != null)
         {
-
+            textMeshProUGUI.text = MensajesInstrucciones[currentIndex];
         }
+    }
+    public void CycleText(int direction)
+    {
+        //Incrementa el índice y vuelve al principio
+        currentIndex = (currentIndex + direction + MensajesInstrucciones.Count) % MensajesInstrucciones.Count;
+
+        //Actualizar la visibilidad
+        UpdateText();
     }
     //Método para salir de la app
     public void ExitGame()
